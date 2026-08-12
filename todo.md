@@ -1,0 +1,25 @@
+# FocusPath — Project TODO
+
+- [x] Theme and branding (colors, logo, app config)
+- [x] Icon mapping for all tabs
+- [x] Tab navigation (Home, Tasks, Plan, Goals, Mentor)
+- [x] Home/Dashboard screen with today overview
+- [x] Task management — list, create, edit, complete, delete
+- [x] Task categories and priority
+- [x] Task persistence with AsyncStorage
+- [x] Time planning — calendar view with time blocks
+- [x] Time block creation and editing
+- [ ] Pomodoro timer for focus sessions
+- [x] Time planning persistence with AsyncStorage
+- [x] Goal tracking — list, create, edit
+- [x] Goal milestones and progress
+- [x] Goal persistence with AsyncStorage
+- [x] AI Digital Mentor — chat interface
+- [x] Mentor message persistence with AsyncStorage
+- [x] Server-side LLM integration for mentor responses
+- [x] Career profile extraction from conversations
+- [x] Quick prompts in mentor tab
+- [x] Polish and test all user flows
+- [x] Push notification reminders for tasks, time blocks, and goals
+- [x] Fix corrupt icon assets (regenerated from HTML error)
+- [x] Add 'Created by Jainam' credit to Home screen
