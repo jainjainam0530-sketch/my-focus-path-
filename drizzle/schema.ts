@@ -107,3 +107,16 @@ export const instagramPublishEvents = mysqlTable("instagram_publish_events", {
 
 export type InstagramPublishEvent = typeof instagramPublishEvents.$inferSelect;
 export type InsertInstagramPublishEvent = typeof instagramPublishEvents.$inferInsert;
+
+/** Tracks Meta user-data deletion callbacks and their public confirmation status. */
+export const instagramDataDeletionRequests = mysqlTable("instagram_data_deletion_requests", {
+  id: int("id").autoincrement().primaryKey(),
+  metaUserId: varchar("metaUserId", { length: 120 }).notNull(),
+  confirmationCode: varchar("confirmationCode", { length: 80 }).notNull().unique(),
+  status: mysqlEnum("status", ["COMPLETED", "NOT_FOUND"]).notNull(),
+  requestedAt: timestamp("requestedAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt").defaultNow().notNull(),
+});
+
+export type InstagramDataDeletionRequest = typeof instagramDataDeletionRequests.$inferSelect;
+export type InsertInstagramDataDeletionRequest = typeof instagramDataDeletionRequests.$inferInsert;

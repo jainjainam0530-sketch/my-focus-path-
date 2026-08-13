@@ -1,5 +1,11 @@
+import { randomBytes } from "node:crypto";
 import { and, desc, eq, isNull, lte } from "drizzle-orm";
-import { instagramConnections, instagramDrafts, instagramPublishEvents } from "../drizzle/schema";
+import {
+  instagramConnections,
+  instagramDataDeletionRequests,
+  instagramDrafts,
+  instagramPublishEvents,
+} from "../drizzle/schema";
 import { getDb } from "./db";
 import {
   InstagramApiError,
@@ -160,6 +166,48 @@ export async function disconnectInstagram(userId: number) {
       disconnectedAt: new Date(),
     })
     .where(eq(instagramConnections.id, connection.id));
+}
+
+/**
+ * Removes all FocusPath data scoped to an Instagram account. Deleting the
+ * connection cascades to its associated manual drafts and publishing audit rows.
+ */
+export async function removeInstagramConnectionForMetaUser(metaUserId: string) {
+  const db = requireDatabase(await getDb());
+  const [connection] = await db
+    .select()
+    .from(instagramConnections)
+    .where(eq(instagramConnections.instagramUserId, metaUserId))
+    .limit(1);
+
+  if (!connection) return "NOT_FOUND" as const;
+  await db.delete(instagramConnections).where(eq(instagramConnections.id, connection.id));
+  return "COMPLETED" as const;
+}
+
+/** Handles Meta's data-deletion request and creates a public confirmation code. */
+export async function processInstagramDataDeletionRequest(metaUserId: string) {
+  const status = await removeInstagramConnectionForMetaUser(metaUserId);
+  const db = requireDatabase(await getDb());
+  const confirmationCode = randomBytes(24).toString("hex");
+
+  await db.insert(instagramDataDeletionRequests).values({
+    metaUserId,
+    confirmationCode,
+    status,
+  });
+
+  return { confirmationCode, status };
+}
+
+export async function getInstagramDataDeletionRequest(confirmationCode: string) {
+  const db = requireDatabase(await getDb());
+  const [request] = await db
+    .select()
+    .from(instagramDataDeletionRequests)
+    .where(eq(instagramDataDeletionRequests.confirmationCode, confirmationCode))
+    .limit(1);
+  return request ?? null;
 }
 
 export async function listInstagramDrafts(userId: number) {

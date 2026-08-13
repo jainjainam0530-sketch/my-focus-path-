@@ -65,6 +65,44 @@ export function createInstagramOAuthState(userId: number) {
 }
 
 /** Validates OAuth state before any access-token exchange occurs. */
+export type MetaSignedRequestPayload = {
+  algorithm?: string;
+  expires?: number;
+  issued_at?: number;
+  user_id?: string;
+  [key: string]: unknown;
+};
+
+/**
+ * Verifies Meta's HMAC-SHA256 signed_request value before a server-to-server
+ * deauthorization or data-deletion callback can affect stored records.
+ */
+export function verifyMetaSignedRequest(signedRequest: string): MetaSignedRequestPayload {
+  const [encodedSignature, encodedPayload] = signedRequest.split(".");
+  if (!encodedSignature || !encodedPayload || !INSTAGRAM_CONFIG.appSecret) {
+    throw new Error("Invalid Meta signed request.");
+  }
+
+  const expected = createHmac("sha256", INSTAGRAM_CONFIG.appSecret).update(encodedPayload).digest();
+  const received = Buffer.from(encodedSignature, "base64url");
+  if (expected.length !== received.length || !timingSafeEqual(expected, received)) {
+    throw new Error("Meta signed request signature could not be verified.");
+  }
+
+  let payload: MetaSignedRequestPayload;
+  try {
+    payload = JSON.parse(Buffer.from(encodedPayload, "base64url").toString("utf8"));
+  } catch {
+    throw new Error("Meta signed request payload is invalid.");
+  }
+
+  if (payload.algorithm !== "HMAC-SHA256" || !payload.user_id) {
+    throw new Error("Meta signed request does not identify a user.");
+  }
+
+  return payload;
+}
+
 export function verifyInstagramOAuthState(state: string): OAuthStatePayload {
   const [encodedPayload, receivedSignature] = state.split(".");
   if (!encodedPayload || !receivedSignature) {
