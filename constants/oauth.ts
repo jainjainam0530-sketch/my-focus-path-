@@ -13,7 +13,9 @@ const env = {
   appId: process.env.EXPO_PUBLIC_APP_ID ?? "",
   ownerId: process.env.EXPO_PUBLIC_OWNER_OPEN_ID ?? "",
   ownerName: process.env.EXPO_PUBLIC_OWNER_NAME ?? "",
-  apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "",
+  // The native APK needs an explicit production API origin; without this,
+  // getApiBaseUrl() falls back to a relative URL and OAuth can use the wrong backend.
+  apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "https://focus-path.onrender.com",
   deepLinkScheme: schemeFromBundleId,
 };
 
