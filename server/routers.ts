@@ -3,7 +3,6 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { mentorRouter } from "./mentorRouter";
-import { instagramRouter } from "./instagramRouter";
 
 export const appRouter = router({
   system: systemRouter,
@@ -18,7 +17,6 @@ export const appRouter = router({
     }),
   }),
   mentor: mentorRouter,
-  instagram: instagramRouter,
 });
 
 export type AppRouter = typeof appRouter;

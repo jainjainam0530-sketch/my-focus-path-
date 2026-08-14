@@ -4,9 +4,6 @@ import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
-import { registerInstagramOAuthRoutes } from "./instagramOAuth";
-import { registerInstagramPrivacyCallbackRoutes } from "./instagramPrivacyCallbacks";
-import { registerInstagramSchedulerRoutes } from "./instagramScheduler";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -60,9 +57,6 @@ async function startServer() {
 
   registerStorageProxy(app);
   registerOAuthRoutes(app);
-  registerInstagramOAuthRoutes(app);
-  registerInstagramPrivacyCallbackRoutes(app);
-  registerInstagramSchedulerRoutes(app);
 
   app.get("/api/health", (_req, res) => {
     res.json({ ok: true, timestamp: Date.now() });
