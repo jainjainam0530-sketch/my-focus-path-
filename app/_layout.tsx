@@ -22,6 +22,7 @@ import { TasksProvider } from "@/lib/tasks-context";
 import { TimeBlocksProvider } from "@/lib/timeblocks-context";
 import { GoalsProvider } from "@/lib/goals-context";
 import { MentorProvider } from "@/lib/mentor-context";
+import { FocusBrainProvider } from "@/lib/focus-brain-context";
 import { initNotifications } from "@/lib/notifications";
 
 const DEFAULT_WEB_INSETS: EdgeInsets = { top: 0, right: 0, bottom: 0, left: 0 };
@@ -96,7 +97,8 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <TasksProvider>
             <TimeBlocksProvider>
-              <GoalsProvider>
+              <FocusBrainProvider>
+                <GoalsProvider>
                 <MentorProvider>
                   <Stack screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="(tabs)" />
@@ -104,7 +106,8 @@ export default function RootLayout() {
                   </Stack>
                   <StatusBar style="auto" />
                 </MentorProvider>
-              </GoalsProvider>
+                </GoalsProvider>
+              </FocusBrainProvider>
             </TimeBlocksProvider>
           </TasksProvider>
         </QueryClientProvider>

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { AnalyticsPieChart, type PieSlice } from "@/components/analytics-pie-chart";
+import { FocusBrainCard } from "@/components/focus-brain-card";
 import { ScreenContainer } from "@/components/screen-container";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useGoals } from "@/lib/goals-context";
@@ -216,6 +217,10 @@ export default function InsightsScreen() {
                 caption={categoryTotal ? "Across your scoped tasks" : "Categories appear with tasks"}
                 accent="#55B6FF"
               />
+            </View>
+
+            <View style={{ gridColumn: gridSpan(12) } as any}>
+              <FocusBrainCard />
             </View>
 
             <View style={[styles.card, styles.chartCard, { gridColumn: gridSpan(7, 7) } as any]}>

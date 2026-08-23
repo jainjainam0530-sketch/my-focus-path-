@@ -7,6 +7,7 @@ const KEYS = {
   MENTOR_MESSAGES: "@focuspath_mentor_messages",
   CAREER_PROFILE: "@focuspath_career_profile",
   NOTIFICATION_IDS: "@focuspath_notification_ids",
+  FOCUS_BRAIN_MODEL: "@focuspath_focus_brain_model",
 } as const;
 
 export async function getStorage<T>(key: string, defaultValue: T): Promise<T> {
