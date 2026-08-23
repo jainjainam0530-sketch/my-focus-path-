@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { FocusBrainNetwork } from "@/components/focus-brain-network";
 import { useFocusBrain } from "@/lib/focus-brain-context";
 
 export function FocusBrainCard() {
@@ -31,6 +32,8 @@ export function FocusBrainCard() {
       <Text style={styles.description}>
         A private, on-device neural network learns from your task outcomes and finds the best next step.
       </Text>
+
+      <FocusBrainNetwork model={model} prediction={recommendedTask?.prediction ?? null} />
 
       {recommendedTask ? (
         <Pressable
