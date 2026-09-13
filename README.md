@@ -1,4 +1,4 @@
-Create a professional GitHub README.md for my project named "FocusPath".
+ "FocusPath".
 
 FocusPath is a mobile productivity and career guidance application built with React Native, Expo Router, and TypeScript.
 
